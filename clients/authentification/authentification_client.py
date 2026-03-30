@@ -1,4 +1,4 @@
-from clients.authentification.authentification_schema import LoginUserRequestSchema, LoginUserResponsetSchema, CreateUserRequestSchema
+from clients.authentification.authentification_schema import LoginUserRequestSchema, LoginUserResponseSchema, CreateUserRequestSchema, CreateUserResponseSchema
 from clients.api_client import ApiClient
 from clients.public_http_builder import get_public_http_client
 from tools.routes import AppRoute
@@ -15,9 +15,13 @@ class AuthentificationClients(ApiClient):
         request_data = request.model_dump(by_alias=True)
         return self.post(url=AppRoute.CREATE_USER, json=request_data)
     
-    def login(self, request: LoginUserRequestSchema) -> LoginUserResponsetSchema:
+    def login(self, request: LoginUserRequestSchema) -> LoginUserResponseSchema:
         response = self.login_user_api(request)
-        return LoginUserResponsetSchema.model_validate_json(response.text)
+        return LoginUserResponseSchema.model_validate_json(response.text)
+    
+    def create(self, request: CreateUserRequestSchema) -> CreateUserResponseSchema:
+        response = self.login_user_api(request)
+        return CreateUserResponseSchema.model_validate_json(response.text)
     
 def get_authentification_client() -> AuthentificationClients:
     return AuthentificationClients(client=get_public_http_client())

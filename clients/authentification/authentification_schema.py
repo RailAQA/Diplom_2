@@ -1,5 +1,7 @@
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
+from tools.fakers import fake
+
 
 class LoginUserRequestSchema(BaseModel):
     email: EmailStr
@@ -22,9 +24,9 @@ class LoginUserUnauthorizedResponseSchema(BaseModel):
     message: str = "email or password are incorrect"
 
 class CreateUserRequestSchema(BaseModel):
-    email: EmailStr
-    password: str
-    name: str
+    email: EmailStr = Field(default_factory=fake.email)
+    password: str = Field(default_factory=fake.password)
+    name: str = Field(default_factory=fake.name)
 
 class CreateUserResponseSchema(BaseModel):
     model_config = ConfigDict(populate_by_name=True)

@@ -1,8 +1,10 @@
-from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from pydantic import BaseModel, Field
+
+from tools.fakers import fake
 
 
 class CreateOrderRequestSchema(BaseModel):
-    ingredients: list[str]
+    ingredients: list[str] = Field(default_factory=list(fake.ingrendient))
 
 class OrderSchema(BaseModel):
     number: int
