@@ -7,3 +7,4 @@ class AppRoute(str, Enum):
     CREATE_USER = "/api/auth/register"
     CREATE_ORDER = "/api/orders"
     DELETE_USER = "/api/auth/user"
+    GET_INGREDIENTS = "/api/ingredients"

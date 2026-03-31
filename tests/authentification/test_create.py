@@ -8,10 +8,12 @@ from tools.assertions.base import assert_status_code
 
 from http import HTTPStatus
 import pytest
+import allure
 
 
 
 class TestCreateUser:
+    @allure.title("Create unique user")
     def test_create_unique_user(self, authentification_client: AuthentificationClients):
         request = CreateUserRequestSchema()
         response = authentification_client.create_user_api(request=request)
@@ -21,6 +23,7 @@ class TestCreateUser:
         validate_json_schema(instance=response.json(), schema=response_data.model_json_schema())
         assert_create_courier_response(response=response_data, request=request)
 
+    @allure.title("Create douplicate user")
     def test_create_douplicate_user(self, function_auth: AuthentificationFixture, authentification_client: AuthentificationClients):
         request = CreateUserRequestSchema(
             email=function_auth.request.email, 
@@ -34,6 +37,7 @@ class TestCreateUser:
         validate_json_schema(instance=response.json(), schema=response_data.model_json_schema())
         assert_create_douplicate_courier_response(response=response_data)
 
+    @allure.title("Create without reqired fields user")
     @pytest.mark.parametrize(
         "email, password, name", 
         [
