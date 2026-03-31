@@ -16,5 +16,5 @@ class ApiClient:
         return self.client.post(url=url, data=data, json=json)
     
     @allure.step("Make DELETE request to {url}")
-    def delete(self, url: str) -> Response:
-        return self.client.delete(url=url)
+    def delete(self, url: str, auth: dict) -> Response:
+        return self.client.delete(url=url, headers={"authorization": auth})

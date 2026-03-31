@@ -36,10 +36,15 @@ class CreateUserResponseSchema(BaseModel):
     access_token: str = Field(alias="accessToken")
     refresh_token: str = Field(alias="refreshToken")
 
-class CreateUserConflictResponseSchema(BaseModel):
+class CreateUserDouplicateResponseSchema(BaseModel):
     success: bool = False
     message: str = "User already exists"
 
-class CreateUserBadRequestResponseSchema(BaseModel):
+class CreateUserRequiredFieldRequestSchema(BaseModel):
+    email: str | None
+    password: str | None
+    name: str | None
+
+class CreateUserRequiredFieldstResponseSchema(BaseModel):
     success: bool = False
     message: str = "Email, password and name are required fields"

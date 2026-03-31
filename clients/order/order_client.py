@@ -7,8 +7,8 @@ from tools.routes import AppRoute
 
 
 class OrderClients(ApiClient):
-    def login_user_api(self, request: CreateOrderRequestSchema) -> Response:
-        request_data = request.model_dump()
+    def create_order_api(self, request: CreateOrderRequestSchema) -> Response:
+        request_data = request.model_dump(by_alias=True)
         return self.post(url=AppRoute.CREATE_ORDER, json=request_data)
     
 def get_order_client(user: AuthentificationUserSchema) -> OrderClients:
