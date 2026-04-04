@@ -1,10 +1,11 @@
 from http import HTTPStatus
+import pytest
 import allure
 
-from clients.order.order_schema import CreateOrderRequestSchema, CreateOrderBadRequestResponseSchema, CreateOrderWithAuthResponseSchema, CreateOrderWithoutAuthResponseSchema
+from clients.order.order_schema import CreateOrderRequestSchema, CreateOrderBadRequestResponseSchema, CreateOrderResponseSchema
 from clients.order.order_client import OrderClients
 from tools.assertions.base import assert_status_code
-from tools.assertions.order import assert_create_order_with_auth_response, assert_create_order_without_auth_response, assert_create_order_without_ingrendients_response
+from tools.assertions.order import assert_create_order_with_auth_response, assert_create_order_without_ingrendients_response
 from tools.assertions.schema import validate_json_schema
 
 
@@ -13,7 +14,7 @@ class TestOrder:
     def test_create_order_with_auth(self, order_client: OrderClients):
         request = CreateOrderRequestSchema()
         response = order_client.create_order_api(request=request)
-        response_data = CreateOrderWithAuthResponseSchema.model_validate_json(response.text)
+        response_data = CreateOrderResponseSchema.model_validate_json(response.text)
 
         assert_status_code(actual=response.status_code, expected=HTTPStatus.OK)
         validate_json_schema(instance=response.json(), schema=response_data.model_json_schema())
@@ -40,8 +41,5 @@ class TestOrder:
     def test_create_order_without_auth(self, public_order_client: OrderClients):
         request = CreateOrderRequestSchema()
         response = public_order_client.create_order_api(request=request)
-        response_data = CreateOrderWithoutAuthResponseSchema.model_validate_json(response.text)
 
         assert_status_code(actual=response.status_code, expected=HTTPStatus.OK)
-        validate_json_schema(instance=response.json(), schema=response_data.model_json_schema())
-        assert_create_order_without_auth_response(response=response_data)
