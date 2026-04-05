@@ -1,4 +1,4 @@
 pytest_plugins = (
-    "fixtures.authentification",
-    "fixtures.order"
+    "conftest_helpers.authentification",
+    "conftest_helpers.order"
 )

@@ -7,6 +7,10 @@ class LoginUserRequestSchema(BaseModel):
     email: EmailStr
     password: str
 
+class UserSchema(BaseModel):
+    email: EmailStr
+    name: str
+
 class LoginUserResponseSchema(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
     
@@ -14,10 +18,6 @@ class LoginUserResponseSchema(BaseModel):
     access_token: str = Field(alias="accessToken")
     refresh_token: str = Field(alias="refreshToken")
     user: UserSchema
-
-class UserSchema(BaseModel):
-    email: EmailStr
-    name: str
 
 class LoginUserUnauthorizedResponseSchema(BaseModel):
     success: bool = False

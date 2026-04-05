@@ -7,7 +7,7 @@ class Fake:
         self.faker = faker
 
     def email(self) -> str:
-        return self.faker.email(domain="yandex.ru")
+        return self.faker.email(domain="testyandex.ru")
     
     def name(self) -> str:
         return self.faker.name_female()

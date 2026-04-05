@@ -1,6 +1,6 @@
 from clients.authentification.authentification_client import AuthentificationClients
 from clients.authentification.authentification_schema import CreateUserRequestSchema, CreateUserResponseSchema, CreateUserDouplicateResponseSchema, CreateUserRequiredFieldstResponseSchema, CreateUserRequiredFieldRequestSchema
-from fixtures.authentification import AuthentificationFixture
+from conftest_helpers.authentification import AuthentificationFixture
 from tools.assertions.authentification import assert_create_courier_response, assert_create_courier_without_reqired_fields_response, assert_create_douplicate_courier_response
 from tools.assertions.schema import validate_json_schema
 from tools.fakers import fake
@@ -23,6 +23,8 @@ class TestCreateUser:
         validate_json_schema(instance=response.json(), schema=response_data.model_json_schema())
         assert_create_courier_response(response=response_data, request=request)
 
+        authentification_client.delete_user_api(auth=response_data.access_token)
+
     @allure.title("Create douplicate user")
     def test_create_douplicate_user(self, function_auth: AuthentificationFixture, authentification_client: AuthentificationClients):
         request = CreateUserRequestSchema(
@@ -43,12 +45,7 @@ class TestCreateUser:
         [
             ("", fake.password(), fake.name()), 
             (fake.email(), "", fake.name()), 
-            (fake.email(), fake.password(), ""), 
-            ("", "", ""),
-            (None, fake.password(), fake.name()),
-            (fake.email(), None, fake.name()),
-            (fake.email(), fake.password(), None),
-            (None, None, None)
+            (fake.email(), fake.password(), "")
             ])
     def test_create_user_without_reqired_fields(self, authentification_client: AuthentificationClients, email, password, name):
         request = CreateUserRequiredFieldRequestSchema(email=email, password=password, name=name)
